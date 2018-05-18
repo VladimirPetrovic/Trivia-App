@@ -1,7 +1,14 @@
 <template>
   <div class="container">
     <div v-if="!showCategories && trivias.length">
-      <ul class="list-group mt-1" v-for="trivia in trivias" :key="trivia.id">
+      <input
+        class="mt-2"
+        size="sm"
+        v-model="searchTerm"
+        type="text"
+        placeholder="Search"
+        />
+      <ul class="list-group mt-1" v-for="trivia in filteredTrivias" :key="trivia.id">
         <li class="list-group-item" @click="showAnswer(trivia)">{{ trivia.question }}</li>
       </ul>
       <button
@@ -36,14 +43,20 @@ import { store } from '../store'
 export default {
   data() {
     return {
-      showCategories: true
+      showCategories: true,
+      searchTerm: ''
     }
   },
   computed: {
     ...mapGetters({
       trivias: 'getRandomTrivias',
       triviaCategories: 'getRandomTriviaCategories'
-    })
+    }),
+    filteredTrivias() {
+      return this.trivias.filter((trivia) => {
+        return trivia.question.toLowerCase().includes(this.searchTerm.toLowerCase())
+      })
+    }
   },
   methods: {
     ...mapActions([
@@ -61,6 +74,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     store.dispatch('fetchRandomTriviaCategories', next)
-  },
+  }
 }
 </script>
