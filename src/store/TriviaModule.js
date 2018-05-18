@@ -2,13 +2,23 @@ import { triviaService } from '../utils/TriviaService'
 
 export const TriviaModule = {
   state: {
-    trivia: ''
+    trivias: []
   },
   getters: {
-    getTrivia(state) {
-      return state.trivia
+    getRandomTrivias(state) {
+      return state.trivias
     }
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    setRandomTrivias(state, trivias) {
+      state.trivias = trivias
+    }
+  },
+  actions: {
+    fetchRandomTrivias(store) {
+      triviaService.getRandomTrivias().then(({ data }) => {
+        store.commit('setRandomTrivias', data)
+      })
+    }
+  }
 }

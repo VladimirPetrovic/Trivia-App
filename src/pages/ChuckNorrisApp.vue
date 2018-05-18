@@ -38,7 +38,7 @@ export default {
     })
   },
   created() {
-    this.fetchJoke(this.category)
+    this.getNewJoke()
   },
   methods: {
     ...mapActions([
