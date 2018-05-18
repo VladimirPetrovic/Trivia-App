@@ -15,9 +15,9 @@ export const ChuckModule = {
     }
   },
   actions: {
-    fetchJoke(store) {
+    fetchJoke(store, category = '') {
       let joke = ''
-      chuckNorrisService.getRandomJoke().then(({ value }) => {
+      chuckNorrisService.getRandomJoke(category).then(({ value }) => {
         store.commit('setJoke', value)
       })
 
