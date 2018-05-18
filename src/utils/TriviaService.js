@@ -11,6 +11,20 @@ export default class TriviaService {
             }
         })
     }
+    getRandomTriviaCategories() {
+        return axios.get('categories', {
+            params: {
+                count: 10
+            }
+        })
+    }
+    getQuestionsForCategory(id) {
+        return axios.get('category', {
+            params: {
+                id
+            }
+        })
+    }
 }
 
 export const triviaService = new TriviaService()

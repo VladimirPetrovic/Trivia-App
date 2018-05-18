@@ -1,20 +1,21 @@
 <template>
   <div class="container">
-    <h3>
-      <span
-        style="display:block; width:100%; word-wrap:break-word; color: #fff; background-color: #28a745; padding: 10px; border-radius: 5px; margin-top: 10px;">
-        {{ joke }}
-      </span>
-    </h3>
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" :src="joke.iconUrl" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Joke</h5>
+        <p class="card-text">{{ joke.value }}.</p>
+      </div>
+    </div>
     <div>
       <input
         type="text"
-        class="form-control"
-        v-model="category"
+        class="form-control mt-4"
+        @input="setCategory"
         placeholder="Unesite kategoriju" />
       <button
         type="button"
-        class="btn btn-primary mt-3"
+        class="btn btn-primary mt-2"
         @click="getNewJoke"
       >
         New Joke
@@ -24,7 +25,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import { store } from '../store'
 
 export default {
   data() {
@@ -37,15 +39,18 @@ export default {
       joke: 'getJoke'
     })
   },
-  created() {
-    this.getNewJoke()
+  beforeRouteEnter(to, from, next) {
+    store.dispatch('fetchJoke', next)
   },
   methods: {
-    ...mapActions([
-      'fetchJoke'
+    ...mapMutations([
+      'setJokeCategory'
     ]),
+    setCategory(event) {
+      this.setJokeCategory(event.target.value)
+    },
     getNewJoke() {
-      this.fetchJoke(this.category)
+      store.dispatch('fetchJoke', () => {})
     }
   }
 }
